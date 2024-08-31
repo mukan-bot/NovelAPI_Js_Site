@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小説を読もう</title>
+    <title>ユーザーページ</title>
     <link rel="stylesheet" href="css/style.css">
     <script type="module">
-        import { init } from './Js/main.js';
+        import { login } from './Js/main.js';
 
         // ページロード時にinit関数を呼び出す
         document.addEventListener("DOMContentLoaded", function() {
-            let t = init();
+            if(!login()){
+                
+                window.location.href = './Login.html'; // ログイン成功時にリダイレクト
+            }
+
         });
     </script>
 </head>
@@ -19,10 +23,5 @@
         <h1>小説を読もう</h1>
     </header>
     <main>
-        
-    </main>
-    <footer>
-
-    </footer>
+        <h2>ユーザーページ</h2>
 </body>
-</html>

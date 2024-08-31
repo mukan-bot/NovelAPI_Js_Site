@@ -1,0 +1,1 @@
+export const api_base_url = "https://novelapi.xyz:8080"
