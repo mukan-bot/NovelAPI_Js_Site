@@ -12,8 +12,26 @@ function getCookie(key) {
     return '';
 }
 
+export function getName() {
+    console.log("UserName: " + getCookie("UserName"));
+    return getCookie("UserName");
+}
+
+export function getPassword() {
+    console.log("Password: " + getCookie("Password"));
+    return getCookie("Password");
+}
+
+export function getUserInfo() {
+    return {
+        UserName: getName(),
+        Password: getPassword()
+    }
+}
+
 // Cookieに値を設定する関数
 function setCookie(key, value, days = 7, path = '/') {
+    console.log("setCookie: " + key + " " + value);
     const date = new Date();
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
     const expires = "expires=" + date.toUTCString();
@@ -25,10 +43,12 @@ export async function login(UserName, Password) {
     
     try {
         const response = await fetch(login);
-        const data = await response.json();
-        
-        setCookie("UserName", "UserName", 30);
-        setCookie("Password", "Password", 30);
+        const data = await response.json();        
+
+        if (data["message"] === "Login success") {
+            setCookie("UserName", UserName, 30);
+            setCookie("Password", Password, 30);
+        }
         
         return data["message"] === "Login success";
     } catch (err) {
@@ -37,26 +57,16 @@ export async function login(UserName, Password) {
     }
 }
 
-export function isLogin() {
+export async function isLogin() {
     const UserName = getCookie("UserName");
     const Password = getCookie("Password");
-    return login(UserName, Password);
+    return await login(UserName, Password);
 }
 
 
 // Initialize
 export function init() {
-    setCookie("UserName", "asdf")
-    setCookie("Password", "asdf")
     // Cookieからユーザーの名前とパスワードを取得
     const UserName = getCookie("UserName")
     const Password = getCookie("Password")
-
-    // ログイン
-    if (login(UserName, Password)) {
-        console.log("Login success")
-    }
-    else {
-        console.log("Login failed")
-    }
 }
