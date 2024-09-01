@@ -1,10 +1,21 @@
-import { login } from './main.js';
+import { isLogin, login } from './main.js';
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    if(!isLogin()) {
+        window.location.href = './login.html';
+    } 
+    else {
+        window.location.href = './home.html';
+    }
+});
+
 
 document.getElementById('login-form').addEventListener('submit', async function(event) {
     event.preventDefault(); // フォームのデフォルトの送信を防ぐ
     const userName = document.getElementById('userName').value;
     const password = document.getElementById('password').value;
-    console.log(userName, password);
     
     try {
         const isLoggedIn = await login(userName, password);
