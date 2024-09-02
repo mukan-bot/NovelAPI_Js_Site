@@ -50,3 +50,40 @@ document.getElementById('activity-form').addEventListener('submit', async functi
         console.error('エラーが発生しました:', error);
     }
 });
+
+
+export async function fetchActivityReport() {
+    try {
+        const url = api_base_url + '/GetActivityReport/' + getUserInfo().UserName;
+        const response = await fetch(url);
+        const data = await response.json();
+        const activityReport = data.activity_report;
+        const tbody = document.querySelector('#activity-table tbody');
+
+        activityReport.forEach(report => {
+            const tr = document.createElement('tr');
+            const dateTd = document.createElement('td');
+            const contentTd = document.createElement('td');
+
+            dateTd.textContent = new Date(report[3]).toLocaleString();
+            contentTd.textContent = report[2];
+
+            tr.appendChild(dateTd);
+            tr.appendChild(contentTd);
+            tbody.appendChild(tr);
+        });
+    } catch (error) {
+        console.error('Error fetching activity report:', error);
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    fetchActivityReport();
+    return;
+    if (!isLogin()) {
+        window.location.href = './Login.html';
+    }
+    else{
+    }
+});

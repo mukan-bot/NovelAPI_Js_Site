@@ -43,8 +43,15 @@ export async function login(UserName, Password) {
     
     try {
         const response = await fetch(login);
-        const data = await response.json();        
+        const data = await response.json();
 
+        // 404エラーが返ってきた場合
+        if (response.status == 404) {
+            console.error("404 Not Found");
+            return false;
+        }
+        
+        // ログイン成功時にCookieにユーザー名とパスワードを保存
         if (data["message"] === "Login success") {
             setCookie("UserName", UserName, 30);
             setCookie("Password", Password, 30);

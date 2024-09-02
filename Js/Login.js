@@ -2,11 +2,8 @@ import { isLogin, login } from './main.js';
 
 
 
-document.addEventListener("DOMContentLoaded", function() {
-    if(!isLogin()) {
-        window.location.href = './login.html';
-    } 
-    else {
+document.addEventListener("DOMContentLoaded", async function() {
+    if(await isLogin()) {
         window.location.href = './home.html';
     }
 });
@@ -24,6 +21,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
         } else {
             // ログイン失敗時の処理を追加
             console.error('ログインに失敗しました');
+            //window.location.href = './login.html';
         }
     } catch (error) {
         console.error('エラーが発生しました:', error);

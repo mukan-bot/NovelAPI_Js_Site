@@ -5,16 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ユーザーページ</title>
     <link rel="stylesheet" href="css/style.css">
-    <script type="module">
-        import { isLogin } from './Js/main.js';
-
-        // ページロード時にinit関数を呼び出す
-        document.addEventListener("DOMContentLoaded", function() {
-            if(!isLogin()) {
-                window.location.href = './login.html';
-            } 
-        });
-    </script>
     <script src="./Js/home.js" type="module" defer></script>
 </head>
 <body>
@@ -31,6 +21,18 @@
             </div>
             <button type="submit" id="submit">送信</button>
         </form>
+        <h3>活動履歴</h3>
+        <table id="activity-table">
+            <thead>
+                <tr>
+                    <th>日付</th>
+                    <th>活動内容</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        
     </main>
 </body>
 </html>
