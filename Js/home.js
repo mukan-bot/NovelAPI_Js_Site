@@ -80,10 +80,7 @@ export async function fetchActivityReport() {
 
 document.addEventListener("DOMContentLoaded", function() {
     fetchActivityReport();
-    return;
     if (!isLogin()) {
         window.location.href = './Login.html';
-    }
-    else{
     }
 });

@@ -13,3 +13,8 @@ header, footer {
 main {
     padding: 2em;
 }
+
+#activity-container {
+    max-height: 200px; /* 固定の高さを設定 */
+    overflow-y: auto; /* 縦方向のスクロールを有効に */
+}
