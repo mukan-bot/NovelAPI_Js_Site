@@ -34,23 +34,6 @@ async function InsertActivityReport(activity_text) {
     })
 }
 
-document.getElementById('activity-form').addEventListener('submit', async function(event) {
-    event.preventDefault(); // フォームのデフォルトの送信を防ぐ
-    const activity_text = document.getElementById('activity').value;
-
-    try {
-        const response = InsertActivityReport(activity_text);
-
-        if (!response) {
-            // ログイン失敗時の処理を追加
-            // ログインページにリダイレクト
-            window.location.href = './Login.html';
-        }
-    } catch (error) {
-        console.error('エラーが発生しました:', error);
-    }
-});
-
 
 export async function fetchActivityReport() {
     try {
@@ -78,9 +61,60 @@ export async function fetchActivityReport() {
 }
 
 
-document.addEventListener("DOMContentLoaded", function() {
-    fetchActivityReport();
-    if (!isLogin()) {
+
+async function fetchUserProfile() {
+    try {
+        const userName = getUserInfo().UserName;
+        const url = api_base_url + '/GetUserInformation/' + userName;
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        displayUserProfile(data);
+    } catch (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+    }
+}
+
+function displayUserProfile(data) {
+    const profileComment = data.profileComment || 'プロフィールコメントがありません';
+    document.getElementById('profile-comment').innerText = profileComment;
+}
+
+
+
+
+document.addEventListener("DOMContentLoaded", async function() {
+    if (!await isLogin()) {
         window.location.href = './Login.html';
+        return;
+    }
+
+    try {
+        await fetchActivityReport();
+        await fetchUserProfile();
+    } catch (error) {
+        console.error('Error during initialization:', error);
+    }
+});
+
+
+
+
+document.getElementById('activity-form').addEventListener('submit', async function(event) {
+    event.preventDefault(); // フォームのデフォルトの送信を防ぐ
+    const activity_text = document.getElementById('activity').value;
+
+    try {
+        const response = InsertActivityReport(activity_text);
+
+        if (!response) {
+            // ログイン失敗時の処理を追加
+            // ログインページにリダイレクト
+            window.location.href = './Login.html';
+        }
+    } catch (error) {
+        console.error('エラーが発生しました:', error);
     }
 });
