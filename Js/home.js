@@ -9,8 +9,8 @@ async function InsertActivityReport(activity_text) {
 
     const url = api_base_url + '/InsertActivityReport';
 
-        // ユーザーに確認を求めるアラートを表示
-    const userConfirmed = window.confirm('この内容で報告しますか？\n' + activity);
+    // ユーザーに確認を求めるアラートを表示
+    const userConfirmed = window.confirm('この内容で活動報告を送信しますか？\n' + activity);
     if (!userConfirmed) {
         return; // ユーザーがキャンセルを選択した場合、関数を終了
     }
@@ -28,6 +28,7 @@ async function InsertActivityReport(activity_text) {
     })
     .then(response => {
         if (response.ok) {
+            window.location.href = './home.html';
             return response.json();
         }
         throw new Error('Network response was not ok.');
@@ -60,28 +61,62 @@ export async function fetchActivityReport() {
     }
 }
 
-
-
-async function fetchUserProfile() {
+async function fetchProfileComment() {
+    const userName = getUserInfo().UserName;
+    const url = api_base_url + `/GetUserInformation/${userName}`;
     try {
-        const userName = getUserInfo().UserName;
-        const url = api_base_url + '/GetUserInformation/' + userName;
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById('profile').value = data.UserInformation; // プロフィールコメントを設定
+        } else {
+            console.error('Failed to fetch profile comment');
         }
-        const data = await response.json();
-        displayUserProfile(data);
     } catch (error) {
-        console.error('There has been a problem with your fetch operation:', error);
+        console.error('Error:', error);
     }
 }
 
-function displayUserProfile(data) {
-    const profileComment = data.profileComment || 'プロフィールコメントがありません';
-    document.getElementById('profile-comment').innerText = profileComment;
-}
+async function updateProfileComment() {
+    const user = getUserInfo();
+    const userName = user.UserName;
+    const password = user.Password;
+    const comment = document.getElementById('profile').value;
+    const url = api_base_url + '/UpdateUserInformation';
 
+    // ユーザーに確認を求めるアラートを表示
+    const userConfirmed = window.confirm('この内容でプロフィールコメントを送信しますか？\n' + comment);
+    if (!userConfirmed) {
+        return; // ユーザーがキャンセルを選択した場合、関数を終了
+    }
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: userName,
+                password: password,
+                comment: comment,
+            }),
+        });
+        if (response.ok) {
+            await response.json();
+            window.location.href = './home.html';
+        } else {
+            console.error('Failed to update profile comment');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 
 
@@ -93,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     try {
         await fetchActivityReport();
-        await fetchUserProfile();
+        await fetchProfileComment();
     } catch (error) {
         console.error('Error during initialization:', error);
     }
@@ -117,4 +152,11 @@ document.getElementById('activity-form').addEventListener('submit', async functi
     } catch (error) {
         console.error('エラーが発生しました:', error);
     }
+});
+
+
+    // フォーム送信イベントのリスナーを追加
+document.getElementById('profile-form').addEventListener('submit', async (event) => {
+    event.preventDefault(); // デフォルトのフォーム送信を防ぐ
+    await updateProfileComment();
 });
