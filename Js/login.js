@@ -4,7 +4,7 @@ import { isLogin, login } from './main.js';
 
 document.addEventListener("DOMContentLoaded", async function() {
     if(await isLogin()) {
-        window.location.href = './home.html';
+        window.location.href = './userPage.html';
     }
 });
 
@@ -17,7 +17,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     try {
         const isLoggedIn = await login(userName, password);
         if (isLoggedIn) {
-            window.location.href = './home.html'; // ログイン成功時にリダイレクト
+            window.location.href = './userPage.html'; // ログイン成功時にリダイレクト
         } else {
             // ログイン失敗時の処理を追加
             console.error('ログインに失敗しました');

@@ -28,7 +28,7 @@ async function InsertActivityReport(activity_text) {
     })
     .then(response => {
         if (response.ok) {
-            window.location.href = './home.html';
+            window.location.href = './userPage.html';
             return response.json();
         }
         throw new Error('Network response was not ok.');
@@ -109,7 +109,7 @@ async function updateProfileComment() {
         });
         if (response.ok) {
             await response.json();
-            window.location.href = './home.html';
+            window.location.href = './userPage.html';
         } else {
             console.error('Failed to update profile comment');
         }
