@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ユーザープロフィール</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="./Js/userProfile.js" type="module" defer></script>
+</head>
+<body>
+    <header>
+        <h1>小説を読もう</h1>
+    </header>
+    <main>
+        <form id="userName-form">
+            <label for="userName">ユーザー名</label>
+            <input type="text" id="userName" name="userName" required>
+            <button type="submit" id="submit">検索</button>
+        </form>
+        <h3>活動履歴</h3>
+        <div id="activity-container">
+            <table id="activity-table">
+                <thead>
+                    <tr>
+                        <th>日付</th>
+                        <th>活動内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <h3>プロフィール</h3>
+        <p id="profile"></p>
+    </main>
+</body>
+</html>
