@@ -20,10 +20,11 @@ document.getElementById('login-form').addEventListener('submit', async function(
             window.location.href = './userPage.html'; // ログイン成功時にリダイレクト
         } else {
             // ログイン失敗時の処理を追加
-            console.error('ログインに失敗しました');
+            document.getElementById('error-message').textContent = 'ユーザー名またはパスワードが違います';
             //window.location.href = './login.html';
         }
     } catch (error) {
-        console.error('エラーが発生しました:', error);
+        console.error(error);
+        document.getElementById('error-message').textContent = 'ログインに失敗しました';
     }
 })
